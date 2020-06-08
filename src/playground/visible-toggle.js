@@ -1,29 +1,35 @@
 //--> babel src/playground/visible-toggle.js --out-file=public/scripts/app.js --presets=env,react --watch
 
-const app = {
-  text : ''
-}
-
-const toggleDetail = () => {
-  if (app.text){
-    app.text = '';
-  } else { 
-    app.text = 'some text';
+class VisibilityToggle extends React.Component {
+  constructor(props){
+    super(props);
+    this.handleToggleVisibility = this.handleToggleVisibility.bind(this);
+    this.state = {
+      visibility: false
+    };
   }
-  render();
+  handleToggleVisibility(){
+    this.setState((prevState) => {
+      return {
+        visibility: !prevState.visibility 
+      }
+    })
+  }
+  render(){
+    return(
+      <div>
+        <h1>Visibility Toggle</h1>
+        <button onClick={this.handleToggleVisibility}>
+        {this.state.visibility? 'Hide' : 'Show'}
+        </button>
+        {this.state.visibility && (
+          <div>
+            <p>it's visible</p>
+          </div>
+        )}
+      </div>
+    );
+  }
 }
 
-const appRoot = document.getElementById('app');
-
-const render = () => {
-  const template = (
-    <div>
-      <h1>Visibility Toggle</h1>
-      <button onClick={toggleDetail}>Show details</button>
-      <p>{app.text}</p>
-    </div>
-  );
-  ReactDOM.render(template, appRoot);
-}
-
-render();
+ReactDOM.render(<VisibilityToggle />, document.getElementById('app'));
